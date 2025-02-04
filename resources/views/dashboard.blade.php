@@ -42,7 +42,7 @@
       
     </div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCO1y-ASkDkH0aJ_gx1rS-qOmLvu4Ul1Ys&libraries=visualization"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=visualization"></script>
 
 
     <script type="text/javascript">
