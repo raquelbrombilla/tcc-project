@@ -17,16 +17,16 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             [
                 'parametro' => 'Argila',
                 'teor_minimo' => 60,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'BAIXO',
-                'valor_minimo' => null,
+                'valor_minimo' => 0,
                 'valor_maximo' => 3,
                 'macronutriente_id' => 2
             ],
             [
                 'parametro' => 'Argila',
                 'teor_minimo' => 60,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'MUITO BAIXO',
                 'valor_minimo' => 3.1,
                 'valor_maximo' => 6,
@@ -35,7 +35,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             [
                 'parametro' => 'Argila',
                 'teor_minimo' => 60,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'MÉDIO',
                 'valor_minimo' => 6.1,
                 'valor_maximo' => 9,
@@ -44,7 +44,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             [
                 'parametro' => 'Argila',
                 'teor_minimo' => 60,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'ALTO',
                 'valor_minimo' => 9.1,
                 'valor_maximo' => 18,
@@ -53,10 +53,10 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             [
                 'parametro' => 'Argila',
                 'teor_minimo' => 60,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'MUITO ALTO',
                 'valor_minimo' => 18.1,
-                'valor_maximo' => null,
+                'valor_maximo' => 1000,
                 'macronutriente_id' => 2
             ],
             [
@@ -64,7 +64,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
                 'teor_minimo' => 41,
                 'teor_maximo' => 60,
                 'classe_disponibilidade' => 'BAIXO',
-                'valor_minimo' => null,
+                'valor_minimo' => 0,
                 'valor_maximo' => 4,
                 'macronutriente_id' => 2
             ],
@@ -101,7 +101,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
                 'teor_maximo' => 60,
                 'classe_disponibilidade' => 'MUITO ALTO',
                 'valor_minimo' => 24.1,
-                'valor_maximo' => null,
+                'valor_maximo' => 1000,
                 'macronutriente_id' => 2
             ],
             [
@@ -109,7 +109,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
                 'teor_minimo' => 21,
                 'teor_maximo' => 40,
                 'classe_disponibilidade' => 'BAIXO',
-                'valor_minimo' => null,
+                'valor_minimo' => 0,
                 'valor_maximo' => 6,
                 'macronutriente_id' => 2
             ],
@@ -146,21 +146,21 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
                 'teor_maximo' => 40,
                 'classe_disponibilidade' => 'MUITO ALTO',
                 'valor_minimo' => 36.1,
-                'valor_maximo' => null,
+                'valor_maximo' => 1000,
                 'macronutriente_id' => 2
             ],
             [
                 'parametro' => 'Argila',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 20,
                 'classe_disponibilidade' => 'BAIXO',
-                'valor_minimo' => null,
+                'valor_minimo' => 0,
                 'valor_maximo' => 10,
                 'macronutriente_id' => 2
             ],
             [
                 'parametro' => 'Argila',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 20,
                 'classe_disponibilidade' => 'MUITO BAIXO',
                 'valor_minimo' => 10.1,
@@ -169,7 +169,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             ],
             [
                 'parametro' => 'Argila',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 20,
                 'classe_disponibilidade' => 'MÉDIO',
                 'valor_minimo' => 20.1,
@@ -178,7 +178,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             ],
             [
                 'parametro' => 'Argila',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 20,
                 'classe_disponibilidade' => 'ALTO',
                 'valor_minimo' => 30.1,
@@ -187,25 +187,25 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             ],
             [
                 'parametro' => 'Argila',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 20,
                 'classe_disponibilidade' => 'MUITO ALTO',
                 'valor_minimo' => 60.1,
-                'valor_maximo' => null,
+                'valor_maximo' => 1000,
                 'macronutriente_id' => 2
             ],
             [
                 'parametro' => 'CTC',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 7.5,
                 'classe_disponibilidade' => 'MUITO BAIXO',
-                'valor_minimo' => null,
+                'valor_minimo' => 0,
                 'valor_maximo' => 20,
                 'macronutriente_id' => 3
             ],
             [
                 'parametro' => 'CTC',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 7.5,
                 'classe_disponibilidade' => 'BAIXO',
                 'valor_minimo' => 20.1,
@@ -214,7 +214,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             ],
             [
                 'parametro' => 'CTC',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 7.5,
                 'classe_disponibilidade' => 'MÉDIO',
                 'valor_minimo' => 40.1,
@@ -223,7 +223,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             ],
             [
                 'parametro' => 'CTC',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 7.5,
                 'classe_disponibilidade' => 'ALTO',
                 'valor_minimo' => 60.1,
@@ -232,11 +232,11 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             ],
             [
                 'parametro' => 'CTC',
-                'teor_minimo' => null,
+                'teor_minimo' => 0,
                 'teor_maximo' => 7.5,
                 'classe_disponibilidade' => 'MUITO ALTO',
                 'valor_minimo' => 120.1,
-                'valor_maximo' => null,
+                'valor_maximo' => 1000,
                 'macronutriente_id' => 3
             ],
             [
@@ -244,7 +244,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
                 'teor_minimo' => 7.6,
                 'teor_maximo' => 15,
                 'classe_disponibilidade' => 'MUITO BAIXO',
-                'valor_minimo' => null,
+                'valor_minimo' => 0,
                 'valor_maximo' => 30,
                 'macronutriente_id' => 3
             ],
@@ -281,7 +281,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
                 'teor_maximo' => 15,
                 'classe_disponibilidade' => 'MUITO ALTO',
                 'valor_minimo' => 180.1,
-                'valor_maximo' => null,
+                'valor_maximo' => 1000,
                 'macronutriente_id' => 3
             ],
             [
@@ -289,7 +289,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
                 'teor_minimo' => 15.1,
                 'teor_maximo' => 30,
                 'classe_disponibilidade' => 'MUITO BAIXO',
-                'valor_minimo' => null,
+                'valor_minimo' => 0,
                 'valor_maximo' => 40,
                 'macronutriente_id' => 3
             ],
@@ -326,23 +326,23 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
                 'teor_maximo' => 30,
                 'classe_disponibilidade' => 'MUITO ALTO',
                 'valor_minimo' => 240.1,
-                'valor_maximo' => null,
+                'valor_maximo' => 1000,
                 'macronutriente_id' => 3
             ],
 
             [
                 'parametro' => 'CTC',
                 'teor_minimo' => 30.1,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'MUITO BAIXO',
-                'valor_minimo' => null,
+                'valor_minimo' => 0,
                 'valor_maximo' => 45,
                 'macronutriente_id' => 3
             ],
             [
                 'parametro' => 'CTC',
                 'teor_minimo' => 30.1,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'BAIXO',
                 'valor_minimo' => 45.1,
                 'valor_maximo' => 90,
@@ -351,7 +351,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             [
                 'parametro' => 'CTC',
                 'teor_minimo' => 30.1,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'MÉDIO',
                 'valor_minimo' => 90.1,
                 'valor_maximo' => 135,
@@ -360,7 +360,7 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             [
                 'parametro' => 'CTC',
                 'teor_minimo' => 30.1,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'ALTO',
                 'valor_minimo' => 135.1,
                 'valor_maximo' => 270,
@@ -369,10 +369,10 @@ class DisponibilidadeFosforoPotassioSeeder extends Seeder
             [
                 'parametro' => 'CTC',
                 'teor_minimo' => 30.1,
-                'teor_maximo' => null,
+                'teor_maximo' => 1000,
                 'classe_disponibilidade' => 'MUITO ALTO',
                 'valor_minimo' => 270.1,
-                'valor_maximo' => null,
+                'valor_maximo' => 1000,
                 'macronutriente_id' => 3
             ],
            
