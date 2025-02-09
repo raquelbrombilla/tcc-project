@@ -18,12 +18,14 @@ class UsersSeeder extends Seeder
             [
                 'name' => 'Raquel Brombilla',
                 'email' => 'raquelbrombilla11@gmail.com',
-                'password' => Hash::make('password')
+                'password' => Hash::make('password'),
+                'admin' => true
             ],
             [
                 'name' => 'Renan dos Santos Duarte',
                 'email' => 'renandossantosduarte@hotmail.com',
-                'password' => Hash::make('123456')
+                'password' => Hash::make('123456'),
+                'admin' => false
             ]
         ]);
     }
