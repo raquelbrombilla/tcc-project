@@ -102,7 +102,7 @@
   
                             <div class="grid gap-6 mb-6 lg:grid-cols-3">
                                 <div class=""></div>
-                                <a href="{{ route('analysis.index') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                                <a href="{{ route('analysis.show', $idAnalise) }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
                                     <i class="bi bi-x-lg"></i>
                                     <span class="ml-2">CANCELAR</span>
                                     

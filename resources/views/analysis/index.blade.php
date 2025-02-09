@@ -77,6 +77,30 @@
                     {data: 'action', width: '10%', className: 'dt-center'},
                 ]
             });
+
+            $('#tableAnalises').on('click', '.btn-excluir', function() {
+                event.preventDefault();
+
+                var button = $(this);
+                var form = button.closest('form');
+
+                Swal.fire({
+                    title: '',
+                    text: 'Deseja excluir os dados da Análise e todas as recomendações relacionadas a ela?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sim',
+                    confirmButtonColor: '#16a34a',
+                    cancelButtonText: 'Não',
+                    cancelButtonColor: '#f27474',
+                    focusConfirm: false,
+                    
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
             
         });
       </script>

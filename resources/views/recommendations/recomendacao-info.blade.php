@@ -8,7 +8,7 @@
                         <header>
                             <div class="bg-gradient-to-r from-green-700 to-green-900 rounded">
                                 <h1 class="text-md font-medium leading-6 text-white mb-6 p-3">
-                                    <a href="{{ route('analysis.index') }}" class="underline">{{ __('Análise de Solo') }}</a>
+                                    <a href="{{ route('analysis.show', $data->analise_id) }}" class="underline">{{ __('Análise de Solo') }}</a>
                                     <i class="bi bi-arrow-right"></i>
                                     {{ __('Informações da Recomendação:') }}
                                 </h1>    
@@ -51,13 +51,17 @@
                                         </a>    
                                     </div>
                                     <div class="mr-3">
-                                        <a href="" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-700 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700">
-                                            <i class="bi bi-trash"></i>
-                                            <span class="ml-2">EXCLUIR</span>
-                                        </a>    
+                                        <form id="formExcluir" action="{{ route('recommendations.destroy', $data->id)}}" method="POST">
+                                            @csrf
+                                            <input type='hidden' name='_method' value='DELETE'>
+                                            <button type='submit' class="btn-excluir inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-700 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700">
+                                                <i class="bi bi-trash"></i>
+                                                <span class="ml-2">EXCLUIR</span>
+                                            </button>
+                                        </form>
                                     </div>
                                     <div>
-                                        <a href="" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700">
+                                        <a href="{{ route('recommendations.exportar', $data->id) }}" class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700">
                                             <i class="bi bi-filetype-pdf"></i>
                                             <span class="ml-2">EXPORTAR</span>
                                         </a>    
@@ -142,11 +146,27 @@
     </div>
 
     <script type="text/javascript">
-        $(function () {
-              
-            editarAnalise(teste) {
-                alert('oi')
-            }
+
+        $('#formExcluir').on('click', '.btn-excluir', function() {
+            event.preventDefault();
+
+            Swal.fire({
+                title: '',
+                text: 'Deseja excluir essa recomendação de adubação e calagem?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sim',
+                confirmButtonColor: '#16a34a',
+                cancelButtonText: 'Não',
+                cancelButtonColor: '#f27474',
+                focusConfirm: false,
+                
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#formExcluir').submit();
+                }
+            });
         });
+
     </script>
 </x-app-layout>

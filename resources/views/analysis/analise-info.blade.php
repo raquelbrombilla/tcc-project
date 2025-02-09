@@ -69,7 +69,6 @@
                                 <button id="btnToggleDiv" class="inline-flex items-center justify-center py-7 px-6 h-12 text-md border border-green-600 shadow-lg font-bold rounded-lg text-white bg-gradient-to-r from-green-700 to-green-900 hover:from-green-600 hover:to-green-800 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-green-500 transform hover:scale-105 transition-transform duration-300 ease-in-out w-80">
                                     <i class="bi bi-eye w-6 h-6 mr-1" id="iconVer"></i>
                                     <i class="bi bi-eye-slash w-6 h-6 mr-1" id="iconNaoVer"></i>
-                                    
                                 </button>    
                             </div>
 
@@ -83,19 +82,22 @@
                         </div> 
                         <div class="grid gap-12 mb-6 mt-6 lg:grid-cols-2" id="divRecomendacao">
                             @if (isset($recomendacoes))
+                                @if (count($recomendacoes) == 0)
+                                <p>Sem recomendações.</p>
+                                @endif
                                 @foreach ($recomendacoes as $r)
-                                    <a href="{{ route('recommendations.show', $r->id) }}" target="_blank" class="bg-white shadow-lg rounded-lg">
-                                        <div class="px-6 py-4">
+                                    <a href="{{ route('recommendations.show', $r->id) }}" target="_blank" class="bg-white hover:bg-neutral-100 shadow-lg rounded-lg">
+                                        <div class="px-6 py-4 text-gray-700">
                                             <div class="font-bold text-xl mb-2">Recomendação</div>
                                             @if (!empty($r->identificador))
-                                                <p class="text-gray-700 text-base">
+                                                <p class="text-base">
                                                     <strong>Identificador:</strong> {{$r->identificador}}
                                                 </p>
                                             @endif
-                                            <p class="text-gray-700 text-base">
+                                            <p class="text-base">
                                                 <strong>Data:</strong> {{ \Carbon\Carbon::parse($r->created_at)->format('d/m/Y') }}
                                             </p>
-                                            <p class="text-gray-700 text-base">
+                                            <p class="text-base">
                                                 <strong>Cultura:</strong> {{$r->cultura}}
                                             </p>
                                         </div>

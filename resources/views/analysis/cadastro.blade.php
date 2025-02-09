@@ -64,9 +64,10 @@
                                     <select id="propriedade" name="propriedade" class=" bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-300 focus:border-gray-300 block p-2.5 dark:bg-white w-full dark:border-gray-300 dark:placeholder-gray-400 dark:text-dark dark:focus:ring-gray-300 dark:focus:border-gray-300" required>
                                         <option value="-">Selecione uma opção</option>
                                         @foreach($propriedades as $prop)
-                                            <option value="{{ $prop->id }}">{{ $prop->nome }}</option>
+                                            <option value="{{ $prop->id }}" @if(isset($edit->id) && $prop->id == old('propriedade', $edit->propriedade_id)) selected @endif >{{ $prop->nome }}</option>
                                         @endforeach
-                                    </select>                                    </div>
+                                    </select>                                    
+                                </div>
                             </div>     
                             
                             <header>

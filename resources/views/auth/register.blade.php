@@ -39,14 +39,18 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Já cadastrado?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Cadastrar') }}
-            </x-primary-button>
+        <div class="grid gap-6 mb-6 lg:grid-cols-1">
+            <div class="flex justify-end mt-4">           
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                    {{ __('Já cadastrado?') }}
+                </a>
+            </div>
+        </div>
+   
+        <div class="items-center mt-4">
+            <button type="submit" class="w-full text-center bg-green-800 items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-greeb-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-offset-2 transition ease-in-out duration-150">
+                Cadastrar
+            </button>
         </div>
     </form>
 </x-guest-layout>
