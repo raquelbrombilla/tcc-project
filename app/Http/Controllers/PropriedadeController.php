@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Propriedades;
+use App\Models\AnalisesSolo;
+
+use App\Http\Requests\PropriedadesRequest;
 
 use Illuminate\Support\Facades\DB;
 use DataTables;
@@ -22,13 +25,15 @@ class PropriedadeController extends Controller
                 return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '
-                            <a href="propriedades/'.$row->id.'/edit" class="edit btn btn-primary" title="Editar propriedade">
-                                <i class="bi bi-pencil-square"></i>
+                        $btn = "
+                            <a href=\"".route('propriedades.edit', $row->id)."\" class='edit btn btn-primary' title='Editar propriedade'>
+                                <i class='bi bi-pencil-square'></i>
                             </a>
-                            <button id="btnExcluirPropriedade" value="'.$row->id.'" class="edit btn btn-primary" title="Excluir propriedade">
-                                <i class="bi bi-trash"></i>
-                            </a>';
+                            <form class='formExcluir' action=\"". route('propriedades.destroy', $row->id) ."\" data-id=\"".$row->id."\" method='POST' style='display:inline-block;'>
+                                ".csrf_field()."
+                                <input type='hidden' name='_method' value='DELETE'>
+                                <button type='submit' class='btn btn-danger btn-excluir'><i class='bi bi-trash'></i></button>
+                            </form>";
 
                     return $btn;
                 })
@@ -39,6 +44,31 @@ class PropriedadeController extends Controller
             return view('propriedades.index');
         } catch(\Exception $e){
             return [];
+        }
+    }
+
+    public function create()
+    {
+        try {
+            return view('propriedades.cadastro');
+        } catch(\Exception $e){
+            return back();
+        }
+    }
+
+    public function store(PropriedadesRequest $request)
+    {
+        try {
+            $request->validated();
+
+            $propriedade = Propriedades::create([
+                'nome' => $request->nome,
+                'user_id' => Auth::user()->id
+            ]);
+
+            return redirect()->route('propriedades.index')->with('success', 'Propriedade cadastrada com sucesso!');
+        } catch(\Exception $e){
+            return back();
         }
     }
 
@@ -53,41 +83,37 @@ class PropriedadeController extends Controller
         }
     }
 
-    public function update(AnalisesSoloRequest $request, $id)
+    public function update(PropriedadesRequest $request, $id)
     {
-        try{
+        try {
             $request->validated();
 
-            AnalisesSolo::where('id', $id)->update([
-                'data_analise' => $request->data_analise,
-                'nome_talhao' => $request->nome_talhao,
-                'area_ha' => $request->area_ha,
-                'estado' => $request->estado,
-                'municipio' => $request->municipio,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
-                'argila' => $request->argila,
-                'ph' => $request->ph,
-                'indice_smp' => $request->indice_smp,
-                'fosforo' => $request->fosforo,
-                'potassio' => $request->potassio,
-                'materia_organica' => $request->materia_organica,
-                'aluminio' => $request->aluminio,
-                'calcio' => $request->calcio,
-                'hidrogenio_aluminio' => $request->hidrogenio_aluminio,
-                'ctc_solo' => $request->ctc_solo,
-                'enxofre' => $request->enxofre,
-                'zinco' => $request->zinco,
-                'cobre' => $request->cobre,
-                'boro' => $request->boro,
-                'manganes' => $request->manganes,
-                'ferro' => $request->ferro,
+            Propriedades::where('id', $id)->update([
+                'nome' => $request->nome,
             ]);
 
-            return redirect()->route('analysis.index')->with('success', 'Análise de Solo atualizada com sucesso!');
+            return redirect()->route('propriedades.index')->with('success', 'Propriedade atualizada com sucesso!');
         }
         catch(\Exception $e){
-            return back()->withError($e->getMessage())->withInput();
+            return back()->withError($e->getMessage());
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $analises = AnalisesSolo::where('propriedade_id', $id)->get();
+
+            if (count($analises) > 0) {
+                return redirect()->route('propriedades.index')->with('warning', 'Existem análises de solo vinculadas à essa propriedade. Não é possível excluí-la.');    
+            }
+            
+            $delete = Propriedades::where('id', $id)->delete();
+
+            return redirect()->route('propriedades.index')->with('success', 'Propriedade excluída com sucesso.');    
+        }
+        catch(\Exception $e) {
+            return back()->withError($e->getMessage());
         }
     }
 }

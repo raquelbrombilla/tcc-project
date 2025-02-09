@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -113,33 +114,66 @@ class RecomendacaoController extends Controller
         return Redirect::route('recommendations.show', $recomendacao_id);
     }
 
-
     public function show($idRecomendacao)
     {
+        try {
+            $data = Recomendacao::from('recomendacao as r')
+                ->select('r.id', 'r.created_at', 'r.expectativa_rendimento', 'r.analise_id', 'r.sistema_cultivo', 'r.cultivo', 'r.cultura_anterior', 'r.prnt', 'npk.necessidade_nitrogenio as n', 'npk.necessidade_potassio as k', 
+                'npk.necessidade_fosforo as p', 'amp_p.nome as adubo_fosforo', 'amp_n.nome as adubo_nitrogenio', 'amp_k.nome as adubo_potassio', 'c.cultura',
+                'adub.nitrogenio as qtd_nitrogenio_adub', 'adub.potassio as qtd_potassio_adub', 'adub.fosforo as qtd_fosforo_adub', 'calagem.necessidade_calagem')
+                ->join('culturas as c', 'c.id', '=', 'r.cultura_id')
+                ->leftJoin('recomendacao_npk as npk', 'npk.recomendacao_id', '=', 'r.id')
+                ->leftJoin('recomendacao_adubacao as adub', 'adub.recomendacao_id', '=', 'r.id')
+                ->leftJoin('recomendacao_calagem as calagem', 'calagem.recomendacao_id', '=', 'r.id')
+                ->leftJoin('adubos_materia_prima as amp_n', 'amp_n.id', '=', 'adub.adubo_nitrogenio_id')
+                ->leftJoin('adubos_materia_prima as amp_p', 'amp_p.id', '=', 'adub.adubo_fosforo_id')
+                ->leftJoin('adubos_materia_prima as amp_k', 'amp_k.id', '=', 'adub.adubo_potassio_id')
+                ->where('r.id', '=', $idRecomendacao)
+                ->first();
+                        
+            return view('recommendations.recomendacao-info')->with('data', $data);
+        } catch (\Exception $e) {
+            return back();
 
-        $data = Recomendacao::from('recomendacao as r')
-            ->select('r.created_at', 'r.expectativa_rendimento', 'r.sistema_cultivo', 'r.cultivo', 'r.cultura_anterior', 'r.prnt', 'npk.necessidade_nitrogenio as n', 'npk.necessidade_potassio as k', 
-            'npk.necessidade_fosforo as p', 'amp_p.nome as adubo_fosforo', 'amp_n.nome as adubo_nitrogenio', 'amp_k.nome as adubo_potassio', 'c.cultura',
-            'adub.nitrogenio as qtd_nitrogenio_adub', 'adub.potassio as qtd_potassio_adub', 'adub.fosforo as qtd_fosforo_adub', 'calagem.necessidade_calagem')
-            ->join('culturas as c', 'c.id', '=', 'r.cultura_id')
-            ->leftJoin('recomendacao_npk as npk', 'npk.recomendacao_id', '=', 'r.id')
-            ->leftJoin('recomendacao_adubacao as adub', 'adub.recomendacao_id', '=', 'r.id')
-            ->leftJoin('recomendacao_calagem as calagem', 'calagem.recomendacao_id', '=', 'r.id')
-            ->leftJoin('adubos_materia_prima as amp_n', 'amp_n.id', '=', 'adub.adubo_nitrogenio_id')
-            ->leftJoin('adubos_materia_prima as amp_p', 'amp_p.id', '=', 'adub.adubo_fosforo_id')
-            ->leftJoin('adubos_materia_prima as amp_k', 'amp_k.id', '=', 'adub.adubo_potassio_id')
-            ->where('r.id', '=', $idRecomendacao)
-            ->first();
-                    
-        return view('recommendations.recomendacao-info')->with('data', $data);
+        }
     }
 
     public function edit(string $id)
     {
+        try {
+
+            $culturas = Culturas::all();    
+            $data = Recomendacao::from('recomendacao as r')
+                ->select('r.id', 'r.created_at', 'r.expectativa_rendimento', 'r.analise_id',
+                'r.sistema_cultivo', 'r.cultivo', 'r.cultura_anterior', 'r.prnt', 'c.cultura')
+                ->join('culturas as c', 'c.id', '=', 'r.cultura_id')
+                ->where('r.id', '=', $idRecomendacao)
+                ->first();
+
+            return view('recommendations.cadastro', compact('culturas', 'data'))->with('idAnalise', $idAnalise);    
+
+        } catch(\Exception $e) {
+            return back();
+        }
     }
 
     public function update(AnalisesSoloRequest $request, $id)
     {
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $recomendacao_adubacao = RecomendacaoAdubacao::where('recomendacao_id', $id)->delete();
+            $recomendacao_calagem = RecomendacaoCalagem::where('recomendacao_id', $id)->delete();
+            $recomendacao_npk = RecomendacaoNPK::where('recomendacao_id', $id)->delete();
+            $recomendacao = Recomendacao::where('id', $id)->delete();
+
+            return redirect()->route('analysis.index')->with('success', 'Recomendação de adubação e calagem excluída com sucesso.');    
+        }
+        catch(\Exception $e) {
+            return back()->withError($e->getMessage());
+        }
     }
 
     public function calcularNPK($idRecomendacao)
@@ -275,11 +309,11 @@ class RecomendacaoController extends Controller
             $analise = AnalisesSolo::where('id', $idAnalise)->first();
 
             if ($analise->ph > 6) {
-                return null;
+                return 0;
             }
 
             $saturacao_bases = $analise->saturacao_bases;
- 
+
             if (is_null($analise->prnt)) {
                 $analise->prnt = 100;
             }
@@ -328,5 +362,25 @@ class RecomendacaoController extends Controller
         } catch(\Exception $e) {
             return back()->withError($e->getMessage())->withInput();
         }
+    }
+
+    public function exportarPdf(Request $request, $idRecomendacao) {
+        $data = Recomendacao::from('recomendacao as r')
+            ->select('r.id', 'r.created_at', 'r.expectativa_rendimento', 'r.analise_id', 'r.sistema_cultivo', 'r.cultivo', 'r.cultura_anterior', 'r.prnt', 'npk.necessidade_nitrogenio as n', 'npk.necessidade_potassio as k', 
+            'npk.necessidade_fosforo as p', 'amp_p.nome as adubo_fosforo', 'amp_n.nome as adubo_nitrogenio', 'amp_k.nome as adubo_potassio', 'c.cultura',
+            'adub.nitrogenio as qtd_nitrogenio_adub', 'adub.potassio as qtd_potassio_adub', 'adub.fosforo as qtd_fosforo_adub', 'calagem.necessidade_calagem')
+            ->join('culturas as c', 'c.id', '=', 'r.cultura_id')
+            ->leftJoin('recomendacao_npk as npk', 'npk.recomendacao_id', '=', 'r.id')
+            ->leftJoin('recomendacao_adubacao as adub', 'adub.recomendacao_id', '=', 'r.id')
+            ->leftJoin('recomendacao_calagem as calagem', 'calagem.recomendacao_id', '=', 'r.id')
+            ->leftJoin('adubos_materia_prima as amp_n', 'amp_n.id', '=', 'adub.adubo_nitrogenio_id')
+            ->leftJoin('adubos_materia_prima as amp_p', 'amp_p.id', '=', 'adub.adubo_fosforo_id')
+            ->leftJoin('adubos_materia_prima as amp_k', 'amp_k.id', '=', 'adub.adubo_potassio_id')
+            ->where('r.id', '=', $idRecomendacao)
+            ->first();
+
+        $pdf = Pdf::loadView('recommendations.recomendacao-pdf', compact('data'));
+
+        return $pdf->download('propriedades.pdf');
     }
 }

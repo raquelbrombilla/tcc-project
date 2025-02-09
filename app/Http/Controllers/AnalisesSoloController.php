@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
-use App\Models\Propriedades;
-use App\Models\Recomendacao;
 use App\Http\Requests\AnalisesSoloRequest;
 use Illuminate\Support\Facades\DB;
+use App\Models\Propriedades;
+use App\Models\Recomendacao;
+use App\Models\RecomendacaoNPK;
+use App\Models\RecomendacaoAdubacao;
+use App\Models\RecomendacaoCalagem;
 
 
 use App\Models\AnalisesSolo;
@@ -39,16 +42,18 @@ class AnalisesSoloController extends Controller
                 return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
-                        $btn = '
-                            <a href="analysis/'.$row->id.'/edit" class="edit btn btn-primary" title="Editar análise">
-                                <i class="bi bi-pencil-square"></i>
+                        $btn = "
+                            <a href=\"".route('analysis.edit', $row->id)."\" class='edit btn btn-primary' title='Editar análise'>
+                                <i class='bi bi-pencil-square'></i>
                             </a>
-                            <button id="btnExcluirAnalise" value="'.$row->id.'" class="edit btn btn-primary" title="Excluir análise">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                            <a href="analysis/'.$row->id.'" class="edit btn btn-primary" title="Visualizar análise">
-                                <i class="bi bi-eye"></i>
-                            </a>';
+                            <form class='formExcluir' action=\"".route('analysis.destroy', $row->id)."\" method='POST' style='display:inline-block;'>
+                                ".csrf_field()."
+                                <input type='hidden' name='_method' value='DELETE'>
+                                <button type='submit' class='btn btn-danger btn-excluir'><i class='bi bi-trash'></i></button>
+                            </form>
+                            <a href=\"".route('analysis.show', $row->id)."\" class='edit btn btn-primary' title='Visualizar análise'>
+                                <i class='bi bi-eye'></i>
+                            </a>";
 
                     return $btn;
                 })
@@ -102,7 +107,8 @@ class AnalisesSoloController extends Controller
                 'boro' => $request->boro,
                 'manganes' => $request->manganes,
                 'ferro' => $request->ferro,
-                'user_id' => Auth::user()->id
+                'user_id' => Auth::user()->id,
+                'propriedade_id' => $request->propriedade
             ]);
 
             return redirect()->route('analysis.show', ['id' => $analiseSolo->id])->with('success', 'Análise de Solo cadastrada com sucesso!');
@@ -140,7 +146,9 @@ class AnalisesSoloController extends Controller
     {
         try {
             $edit = AnalisesSolo::where('user_id', Auth::user()->id)->findOrFail($id);
-            return view('analysis.cadastro', compact('edit'));    
+            $propriedades = Propriedades::where('user_id', '=', Auth::user()->id)->get();
+
+            return view('analysis.cadastro', compact('edit', 'propriedades'));    
         } 
         catch(\Exception $e){
             return back();
@@ -176,12 +184,34 @@ class AnalisesSoloController extends Controller
                 'boro' => $request->boro,
                 'manganes' => $request->manganes,
                 'ferro' => $request->ferro,
+                'propriedade_id' => $request->propriedade
             ]);
 
             return redirect()->route('analysis.index')->with('success', 'Análise de Solo atualizada com sucesso!');
         }
         catch(\Exception $e){
             return back()->withError($e->getMessage())->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $recomendacao = Recomendacao::where('analise_id', $id)->get();
+            
+            foreach ($recomendacao as $r) {
+                $recomendacao_adubacao = RecomendacaoAdubacao::where('recomendacao_id', $r->id)->delete();
+                $recomendacao_calagem = RecomendacaoCalagem::where('recomendacao_id', $r->id)->delete();
+                $recomendacao_npk = RecomendacaoNPK::where('recomendacao_id', $r->id)->delete();
+                $recomendacao = Recomendacao::where('id', $r->id)->delete();    
+            }
+
+            $analise = AnalisesSolo::where('id', $id)->delete();
+
+            return redirect()->route('analysis.index')->with('success', 'A análise de solo e todas as suas recomendações foram excluídas com sucesso.');    
+        }
+        catch(\Exception $e) {
+            return back()->withError($e->getMessage());
         }
     }
 
